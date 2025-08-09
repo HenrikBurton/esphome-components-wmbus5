@@ -105,7 +105,7 @@ void SX1262::setup() {
 
 bool SX1262::read(uint8_t *buffer, size_t length) {
   if (this->irq_pin_->digital_read()) {
-    spi_transaction(RADIOLIB_SX126X_CMD_READ_BUFFER, {this->offset, 0x00}, buffer, length);
+    spi_read_frame(RADIOLIB_SX126X_CMD_READ_BUFFER, {this->offset, 0x00}, buffer, length);
     this->offset += length;
     return true;
   }

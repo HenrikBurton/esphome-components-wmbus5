@@ -47,7 +47,7 @@ uint8_t RadioTransceiver::spi_transaction(uint8_t command, std::initializer_list
   return rval;
 }
 
-void RadioTransceiver::spi_transaction(uint8_t command, std::initializer_list<uint8_t> data, uint8_t *buffer, size_t length) {
+void RadioTransceiver::spi_read_frame(uint8_t command, std::initializer_list<uint8_t> data, uint8_t *buffer, size_t length) {
   this->delegate_->begin_transaction();
   auto rval = this->delegate_->transfer(command);
   for (auto byte : data)
