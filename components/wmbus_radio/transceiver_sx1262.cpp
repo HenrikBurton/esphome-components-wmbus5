@@ -119,14 +119,14 @@ void SX1262::restart_rx() {
   delay(5);
 
   // Clear IRQ
-  const uint32_t irqmask = RADIOLIB_SX126X_IRQ_RX_DONE | RADIOLIB_SX126X_IRQ_SYNC_WORD_VALID;
+  const uint32_t irqmask = RADIOLIB_SX126X_IRQ_RX_DONE; // | RADIOLIB_SX126X_IRQ_SYNC_WORD_VALID;
   this->spi_write(RADIOLIB_SX126X_CMD_CLEAR_IRQ_STATUS, {
                   BYTE(irqmask, 1), BYTE(irqmask, 0)
   });
 
   // Enable RX
-  const uint32_t rxTimeout = 0x00000000;
-  this->spi_write(RADIOLIB_SX126X_CMD_SET_RX, 
+  const uint32_t timeout = 0x00000000;
+  this->spi_write(RADIOLIB_SX126X_CMD_SET_RX, {
                   BYTE(timeout, 2), BYTE(timeout, 1), BYTE(timeout, 0)
   });
   delay(5);
