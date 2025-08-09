@@ -16,9 +16,9 @@ void SX1262::setup() {
   this->reset();
 
   ESP_LOGVV(TAG, "checking silicon revision");
-  uint8_t revision = 0x1262; // this->spi_read(0x42);
+  uint32_t revision = 0x1262; // this->spi_read(0x42);
   ESP_LOGVV(TAG, "revision: %04X", revision);
-  if revision != 0x1262 {
+  if (revision != 0x1262) {
     ESP_LOGE(TAG, "Invalid silicon revision: %04X", revision);
     return;
   }
