@@ -462,12 +462,11 @@ namespace wmbus_radio {
 class SX1262 : public RadioTransceiver {
 public:
   void setup() override;
-//  bool read(uint8_t *, size_t) override;
+  bool read(uint8_t *, size_t) override;
   void restart_rx() override;
   int8_t get_rssi() override;
   const char *get_name() override;
 protected:
-  bool read(uint8_t *, size_t) override;
   uint8_t offset;
 };
 } // namespace wmbus_radio
