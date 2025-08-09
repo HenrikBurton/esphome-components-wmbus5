@@ -467,6 +467,7 @@ public:
   int8_t get_rssi() override;
   const char *get_name() override;
 protected:
+  bool read(uint8_t *, size_t) override;
   uint8_t offset;
 };
 } // namespace wmbus_radio
