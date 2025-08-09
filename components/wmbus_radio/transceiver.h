@@ -36,7 +36,7 @@ protected:
   InternalGPIOPin *reset_pin_;
   InternalGPIOPin *irq_pin_;
 
-  bool read(uint8_t *, size_t) = 0;
+  bool read(uint8_t *, size_t);
 
   void reset();
   void common_setup();
