@@ -2,7 +2,7 @@
 
 #include "esphome/core/log.h"
 
-#define F_OSC (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000f)
+#define F_OSC (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f)
 
 namespace esphome {
 namespace wmbus_radio {
