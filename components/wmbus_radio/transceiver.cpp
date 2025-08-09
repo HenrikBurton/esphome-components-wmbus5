@@ -9,17 +9,9 @@ namespace wmbus_radio {
 static const char *TAG = "wmbus.transceiver";
 
 bool RadioTransceiver::read_in_task(uint8_t *buffer, size_t length) {
-  const uint8_t *buffer_end = buffer + length;
-  int wait_count = 0;
-
-  while (buffer != buffer_end) {
-    auto byte = this->read();
-    if (byte.has_value())
-      *buffer++ = *byte;
-    else if (!ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(1)))
+  while (!this->read(buffer, length)) {
+    if (!ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(1)))
       return false;
-    else
-      wait_count++;
   }
 
   return true;
@@ -46,27 +38,37 @@ void RadioTransceiver::common_setup() {
   this->spi_setup();
 }
 
-uint8_t RadioTransceiver::spi_transaction(uint8_t operation, uint8_t address,
-                                          std::initializer_list<uint8_t> data) {
+uint8_t RadioTransceiver::spi_transaction(uint8_t command, std::initializer_list<uint8_t> data) {
   this->delegate_->begin_transaction();
-  auto rval = this->delegate_->transfer(operation | address);
+  auto rval = this->delegate_->transfer(command);
   for (auto byte : data)
     rval = this->delegate_->transfer(byte);
   this->delegate_->end_transaction();
   return rval;
 }
 
-uint8_t RadioTransceiver::spi_read(uint8_t address) {
-  return this->spi_transaction(0x00, address, {0});
+void RadioTransceiver::spi_transaction(uint8_t command, std::initializer_list<uint8_t> data, uint8_t *buffer, size_t length) {
+  this->delegate_->begin_transaction();
+  auto rval = this->delegate_->transfer(command);
+  for (auto byte : data)
+    rval = this->delegate_->transfer(byte);
+  for (size_t i = 0; i < length; i++)
+    *buffer++ = this->delegate_->transfer(0x00);
+  this->delegate_->end_transaction();
+  return;
 }
 
-void RadioTransceiver::spi_write(uint8_t address,
+uint8_t RadioTransceiver::spi_read(uint8_t command) {
+  return this->spi_transaction(command, {0});
+}
+
+void RadioTransceiver::spi_write(uint8_t command,
                                  std::initializer_list<uint8_t> data) {
-  this->spi_transaction(0x80, address, data);
+  this->spi_transaction(command, data);
 }
 
-void RadioTransceiver::spi_write(uint8_t address, uint8_t data) {
-  this->spi_write(address, {data});
+void RadioTransceiver::spi_write(uint8_t command, uint8_t data) {
+  this->spi_write(command, {data});
 }
 
 void RadioTransceiver::dump_config() {
