@@ -40,10 +40,9 @@ protected:
 
   void reset();
   void common_setup();
-  uint8_t spi_transaction(uint8_t operation, uint8_t address,
+  uint8_t spi_transaction(uint8_t command,
                           std::initializer_list<uint8_t> data);
-  void spi_read_frame(uint8_t operation, uint8_t address,
-                          std::initializer_list<uint8_t> data, uint8_t*, size_t length);
+  void spi_read_frame(uint8_t command, std::initializer_list<uint8_t> data, uint8_t *buffer, size_t length);
   uint8_t spi_read(uint8_t address);
   void spi_write(uint8_t address, std::initializer_list<uint8_t> data);
   void spi_write(uint8_t address, uint8_t data);
