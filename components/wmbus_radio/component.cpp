@@ -32,11 +32,11 @@ void Radio::setup() {
 }
 
 void Radio::loop() {
-  ESP_LOGD(TAG, "Looping");
+  //ESP_LOGD(TAG, "Looping");
   Packet *p;
   if (xQueueReceive(this->packet_queue_, &p, 0) != pdPASS)
     return;
-
+  ESP_LOGD(TAG, "Packet received");
   auto frame = p->convert_to_frame();
 
   if (!frame)
