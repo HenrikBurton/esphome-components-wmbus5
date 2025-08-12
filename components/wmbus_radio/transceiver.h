@@ -20,7 +20,7 @@ public:
   template <typename T>
   void attach_data_interrupt(void (*callback)(T *), T *arg) {
     this->irq_pin_->attach_interrupt(callback, arg,
-                                     gpio::INTERRUPT_FALLING_EDGE);
+                                     gpio::INTERRUPT_RISING_EDGE);
   }
   virtual void restart_rx() = 0;
   virtual int8_t get_rssi() = 0;
