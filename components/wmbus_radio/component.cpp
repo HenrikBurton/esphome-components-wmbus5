@@ -32,7 +32,7 @@ void Radio::setup() {
 }
 
 void Radio::loop() {
-  ESP_LOGVV(TAG, "Looping");
+  ESP_LOGD(TAG, "Looping");
   Packet *p;
   if (xQueueReceive(this->packet_queue_, &p, 0) != pdPASS)
     return;
@@ -113,7 +113,7 @@ void Radio::receive_frame() {
 void Radio::receiver_task(Radio *arg) {
   int counter = 0;
   while (true) {
-    ESP_LOGVV(TAG, "Receiver task running");
+    ESP_LOGD(TAG, "Receiver task running");
     arg->receive_frame();
   }
 }
