@@ -115,7 +115,7 @@ bool SX1262::get_frame(uint8_t *buffer, size_t length) {
 }
 
 void SX1262::restart_rx() {
-  ESP_LOGVV(TAG, "Restarting RX");
+  ESP_LOGD(TAG, "Restarting RX");
   // Standby mode
   this->spi_write(RADIOLIB_SX126X_CMD_SET_STANDBY, {RADIOLIB_SX126X_STANDBY_XOSC});
   delay(5);
