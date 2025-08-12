@@ -111,8 +111,10 @@ void Radio::receive_frame() {
 
 void Radio::receiver_task(Radio *arg) {
   int counter = 0;
-  while (true)
+  while (true) {
+    ESP_LOGVV(TAG, "Receiver task running");
     arg->receive_frame();
+  }
 }
 
 void Radio::add_frame_handler(std::function<void(Frame *)> &&callback) {

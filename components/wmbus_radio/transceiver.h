@@ -25,6 +25,7 @@ public:
   virtual void restart_rx() = 0;
   virtual int8_t get_rssi() = 0;
   virtual const char *get_name() = 0;
+  virtual bool get_frame(uint8_t *, size_t);
 
   bool read_in_task(uint8_t *buffer, size_t length);
 
@@ -35,8 +36,6 @@ public:
 protected:
   InternalGPIOPin *reset_pin_;
   InternalGPIOPin *irq_pin_;
-
-  virtual bool get_frame(uint8_t *, size_t);
 
   void reset();
   void common_setup();
