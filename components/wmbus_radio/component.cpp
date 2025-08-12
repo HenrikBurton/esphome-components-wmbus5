@@ -32,6 +32,7 @@ void Radio::setup() {
 }
 
 void Radio::loop() {
+  ESP_LOGVV(TAG, "Looping");
   Packet *p;
   if (xQueueReceive(this->packet_queue_, &p, 0) != pdPASS)
     return;
