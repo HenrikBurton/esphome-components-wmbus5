@@ -105,6 +105,7 @@ void SX1262::setup() {
 }
 
 bool SX1262::get_frame(uint8_t *buffer, size_t length) {
+  ESP_LOGD(TAG, "get_frame: offset:%zu length=%zu", this->offset, length);
   if (this->irq_pin_->digital_read()) {
     spi_read_frame(RADIOLIB_SX126X_CMD_READ_BUFFER, {this->offset, 0x00}, buffer, length);
     this->offset += length;
