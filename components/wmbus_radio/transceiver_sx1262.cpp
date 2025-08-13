@@ -33,14 +33,15 @@ void SX1262::setup() {
   const uint32_t frequency = 868950000;
 
   uint32_t frf = ((uint64_t)frequency * (1 << RADIOLIB_SX126X_DIV_EXPONENT)) / F_OSC;
-  this->spi_write(RADIOLIB_SX126X_CMD_SET_RF_FREQUENCY, {BYTE(frf, 2), BYTE(frf, 1), BYTE(frf, 0)});
+  this->spi_write(RADIOLIB_SX126X_CMD_SET_RF_FREQUENCY, {
+                  BYTE(frf, 3), BYTE(frf, 2), BYTE(frf, 1), BYTE(frf, 0)});
 
   ESP_LOGVV(TAG, "setting buffer base adress");
   this->spi_write(RADIOLIB_SX126X_CMD_SET_BUFFER_BASE_ADDRESS, {0x00, 0x00});
 
   ESP_LOGVV(TAG, "setting modulation parameters");
-  uint32_t bitrate = (uint32_t)((F_OSC * 32.0f) / 1000000.0f);
-  uint32_t freqdev = (uint32_t)(((50000.0f) * (float)((uint32_t)(1) << 25)) / F_OSC);
+  uint32_t bitrate = (uint32_t)((F_OSC * 32.0f) / (100.0f * 1000.0f));
+  uint32_t freqdev = (uint32_t)(((50.0f * 1000.0f) * (float)((uint32_t)(1) << 25)) / F_OSC);
   this->spi_write(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, {
                   BYTE(bitrate, 2), BYTE(bitrate, 1), BYTE(bitrate, 0),
                   RADIOLIB_SX126X_GFSK_FILTER_NONE,
