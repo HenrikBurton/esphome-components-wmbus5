@@ -96,7 +96,7 @@ void SX1262::setup() {
   this->spi_write(RADIOLIB_SX126X_CMD_SET_STANDBY, {RADIOLIB_SX126X_STANDBY_XOSC});
 
   ESP_LOGVV(TAG, "setting RX mode");
-  const uint32_t timeout = 0x00000000;
+  const uint32_t timeout = 0xFFFFFF;
   this->spi_write(RADIOLIB_SX126X_CMD_SET_RX, {
                   BYTE(timeout, 2), BYTE(timeout, 1), BYTE(timeout, 0)
   });
@@ -135,7 +135,7 @@ void SX1262::restart_rx() {
   });
 
   // Enable RX
-  const uint32_t timeout = 0x00000000;
+  const uint32_t timeout = 0xffffff;
   this->spi_write(RADIOLIB_SX126X_CMD_SET_RX, {
                   BYTE(timeout, 2), BYTE(timeout, 1), BYTE(timeout, 0)
   });
