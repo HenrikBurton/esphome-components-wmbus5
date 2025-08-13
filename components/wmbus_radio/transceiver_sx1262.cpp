@@ -52,7 +52,7 @@ void SX1262::setup() {
   this->spi_write(RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS, {
                   BYTE(16, 1), BYTE(16, 0),   // Preamble length
                   RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_8, 
-                  BYTE(16, 1), BYTE(16, 0),   // Sync word bit length
+                  16,                         // Sync word bit length
                   RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, 
                   RADIOLIB_SX126X_GFSK_PACKET_FIXED, 
                   0xff,                       // Payload length
@@ -95,11 +95,12 @@ void SX1262::setup() {
   this->spi_write(RADIOLIB_SX126X_CMD_SET_STANDBY, {RADIOLIB_SX126X_STANDBY_XOSC});
 
   ESP_LOGVV(TAG, "setting RX mode");
-  //const uint32_t timeout = 0x00000000;
-  //this->spi_write(RADIOLIB_SX126X_CMD_SET_RX, {
-  //                BYTE(timeout, 2), BYTE(timeout, 1), BYTE(timeout, 0)
-  //});
-  restart_rx();
+  const uint32_t timeout = 0x00000000;
+  this->spi_write(RADIOLIB_SX126X_CMD_SET_RX, {
+                  BYTE(timeout, 2), BYTE(timeout, 1), BYTE(timeout, 0)
+  });
+
+  this->offset = 0;
 
   ESP_LOGV(TAG, "SX1262 setup done");
 }

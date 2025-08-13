@@ -76,19 +76,14 @@ void Radio::wakeup_receiver_task_from_isr(TaskHandle_t *arg) {
 
 void Radio::receive_frame() {
   ESP_LOGD(TAG, "Receive frame");
-  this->radio->restart_rx();
 
-  if (!ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(60000))) {
-    ESP_LOGD(TAG, "Radio interrupt timeout");
+  if (!ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(60000)))
     return;
-  }
+  
   auto packet = std::make_unique<Packet>();
 
-  if (!this->radio->read_in_task(packet->rx_data_ptr(),
-                                 packet->rx_capacity())) {
-    ESP_LOGV(TAG, "Failed to read preamble");
+  if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity())) 
     return;
-  }
 
   if (!packet->calculate_payload_size()) {
     ESP_LOGD(TAG, "Cannot calculate payload size");
