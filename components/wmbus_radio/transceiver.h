@@ -25,7 +25,7 @@ public:
   virtual void restart_rx() = 0;
   virtual int8_t get_rssi() = 0;
   virtual const char *get_name() = 0;
-  virtual bool get_frame();
+  virtual bool get_frame(uint8_t *, size_t, uint32_t) = 0;
 
   bool read_in_task(uint8_t *buffer, size_t length, uint32_t offset);
 
