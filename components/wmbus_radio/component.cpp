@@ -35,7 +35,7 @@ void Radio::loop() {
   Packet *p;
   if (xQueueReceive(this->packet_queue_, &p, 0) != pdPASS)
     return;
-  ESP_LOGD(TAG, "Received packet: size %zu", p->size());
+
   auto frame = p->convert_to_frame();
 
   if (!frame) {
