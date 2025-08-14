@@ -111,12 +111,9 @@ bool SX1262::get_frame(uint8_t *buffer, size_t length, uint32_t offset) {
     spi_read_frame(RADIOLIB_SX126X_CMD_READ_BUFFER, {uint8_t(offset), 0x00}, buffer, length);
 
     // Clear IRQ
-    if (offset == 0) {
-      const uint32_t irqmask = RADIOLIB_SX126X_IRQ_RX_DONE; 
-      this->spi_write(RADIOLIB_SX126X_CMD_CLEAR_IRQ_STATUS, {
-                      BYTE(irqmask, 1), BYTE(irqmask, 0)
-      });
-    } 
+    const uint32_t irqmask = RADIOLIB_SX126X_IRQ_RX_DONE; 
+    this->spi_write(RADIOLIB_SX126X_CMD_CLEAR_IRQ_STATUS, {BYTE(irqmask, 1), BYTE(irqmask, 0)});
+
     return true;
   }
 
