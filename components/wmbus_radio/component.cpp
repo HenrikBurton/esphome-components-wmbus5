@@ -77,9 +77,11 @@ void Radio::wakeup_receiver_task_from_isr(TaskHandle_t *arg) {
 void Radio::receive_frame() {
   ESP_LOGD(TAG, "Receive frame");
 
-  if (!ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(60000)))
+  if (!ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(60000))) {
+    this->radio->restart_rx();
     return;
-  
+  }
+
   auto packet = std::make_unique<Packet>();
 
   if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity(), 0)) 
