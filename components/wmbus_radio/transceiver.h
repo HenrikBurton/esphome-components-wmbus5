@@ -27,7 +27,7 @@ public:
   virtual const char *get_name() = 0;
   virtual bool get_frame();
 
-  bool read_in_task(uint8_t *buffer, size_t length);
+  bool read_in_task(uint8_t *buffer, size_t length, uint32_t offset);
 
   void set_spi(spi::SPIDelegate *spi);
   void set_reset_pin(InternalGPIOPin *reset_pin);
