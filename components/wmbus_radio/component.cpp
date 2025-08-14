@@ -43,7 +43,7 @@ void Radio::loop() {
     return;
   }
 
-  ESP_LOGD(TAG, "Have data from radio (%zu bytes) [RSSI: %ddBm, mode: %s]",
+  ESP_LOGI(TAG, "Have data from radio (%zu bytes) [RSSI: %ddBm, mode: %s]",
            frame->data().size(), frame->rssi(), toString(frame->link_mode()));
 
   uint8_t packet_handled = 0;
