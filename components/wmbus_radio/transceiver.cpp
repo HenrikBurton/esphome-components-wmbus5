@@ -8,8 +8,8 @@ namespace esphome {
 namespace wmbus_radio {
 static const char *TAG = "wmbus.transceiver";
 
-bool RadioTransceiver::read_in_task(uint8_t *buffer, size_t length) {
-  while (!this->get_frame(buffer, length)) {
+bool RadioTransceiver::read_in_task(uint8_t *buffer, size_t length, uint32_t offset) {
+  while (!this->get_frame(buffer, length, offset)) {
     if (!ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(1)))
       return false;
   }
