@@ -78,6 +78,10 @@ uint8_t *Packet::rx_data_ptr() {
   return this->data_.data() + this->data_.size();
 }
 
+uint32_t Packet::rx_offset() {
+  return this->data_.size();
+}
+
 bool Packet::calculate_payload_size() {
   auto total_length = this->expected_size();
   this->data_.reserve(total_length);

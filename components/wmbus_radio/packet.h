@@ -21,6 +21,7 @@ public:
 
   uint8_t *rx_data_ptr();
   size_t rx_capacity();
+  uint32_t rx_offset();
   bool calculate_payload_size();
   void set_rssi(int8_t rssi);
 

@@ -106,15 +106,17 @@ void SX1262::setup() {
   ESP_LOGV(TAG, "SX1262 setup done");
 }
 
-bool SX1262::get_frame(uint8_t *buffer, size_t length) {
+bool SX1262::get_frame(uint8_t *buffer, size_t length, uint32_t offset) {
   if (this->irq_pin_->digital_read()) {
-    spi_read_frame(RADIOLIB_SX126X_CMD_READ_BUFFER, {0x00, 0x00}, buffer, length);
+    spi_read_frame(RADIOLIB_SX126X_CMD_READ_BUFFER, {uint8_t(offset), 0x00}, buffer, length);
 
     // Clear IRQ
-    const uint32_t irqmask = RADIOLIB_SX126X_IRQ_RX_DONE; // | RADIOLIB_SX126X_IRQ_SYNC_WORD_VALID;
-    this->spi_write(RADIOLIB_SX126X_CMD_CLEAR_IRQ_STATUS, {
-                    BYTE(irqmask, 1), BYTE(irqmask, 0)
-    });
+    if (offset == 0) {
+      const uint32_t irqmask = RADIOLIB_SX126X_IRQ_RX_DONE; 
+      this->spi_write(RADIOLIB_SX126X_CMD_CLEAR_IRQ_STATUS, {
+                      BYTE(irqmask, 1), BYTE(irqmask, 0)
+      });
+    } 
     return true;
   }
 
