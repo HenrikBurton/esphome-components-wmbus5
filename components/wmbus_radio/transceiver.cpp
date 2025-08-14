@@ -53,7 +53,7 @@ void RadioTransceiver::spi_read_frame(uint8_t command, std::initializer_list<uin
   for (auto byte : data)
     rval = this->delegate_->transfer(byte);
   for (size_t i = 0; i < length; i++)
-    *buffer++ = this->delegate_->transfer(0x00);
+    *buffer++ = this->delegate_->transfer(0x55);
   this->delegate_->end_transaction();
   return;
 }
