@@ -41,6 +41,7 @@ void Radio::loop() {
   if (!frame) {
     ESP_LOGD(TAG, "Failed to convert packet to frame");
     return;
+  }
 
   ESP_LOGI(TAG, "Have data from radio (%zu bytes) [RSSI: %ddBm, mode: %s]",
            frame->data().size(), frame->rssi(), toString(frame->link_mode()));
