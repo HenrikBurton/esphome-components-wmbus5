@@ -86,7 +86,7 @@ bool Packet::calculate_payload_size() {
 
 std::optional<Frame> Packet::convert_to_frame() {
   std::optional<Frame> frame = {};
-  ESP_LOGD(TAG, "Converting packet to frame, size %zu", this->data_.size());
+  ESP_LOGD("Packet", "Converting packet to frame, size %zu", this->data_.size());
   if (this->link_mode() == LinkMode::T1 &&
       this->expected_size() == this->data_.size()) {
     auto decoded_data = decode3of6(this->data_);
