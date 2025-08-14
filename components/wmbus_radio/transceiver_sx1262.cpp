@@ -68,7 +68,7 @@ void SX1262::setup() {
   });
 
   ESP_LOGVV(TAG, "setting IRQ parameters");
-  const uint32_t irqmask = RADIOLIB_SX126X_IRQ_RX_DONE; // | RADIOLIB_SX126X_IRQ_SYNC_WORD_VALID;
+  const uint32_t irqmask = RADIOLIB_SX126X_IRQ_RX_DONE;
   this->spi_write(RADIOLIB_SX126X_CMD_SET_DIO_IRQ_PARAMS, {
                   BYTE(irqmask, 1), BYTE(irqmask, 0),
                   BYTE(irqmask, 1), BYTE(irqmask, 0),
