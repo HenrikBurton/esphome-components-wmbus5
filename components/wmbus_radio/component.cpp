@@ -85,16 +85,11 @@ void Radio::receive_frame() {
   if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity())) 
     return;
 
-  if (!packet->calculate_payload_size()) {
-    ESP_LOGD(TAG, "Cannot calculate payload size");
+  if (!packet->calculate_payload_size())
     return;
-  }
 
-  if (!this->radio->read_in_task(packet->rx_data_ptr(),
-                                 packet->rx_capacity())) {
-    ESP_LOGW(TAG, "Failed to read data");
-    return;
-  }
+//  if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity()))
+//    return;
 
   packet->set_rssi(this->radio->get_rssi());
   auto packet_ptr = packet.get();
@@ -110,10 +105,8 @@ void Radio::receive_frame() {
 
 void Radio::receiver_task(Radio *arg) {
   int counter = 0;
-  while (true) {
-    ESP_LOGD(TAG, "Receiver task running");
+  while (true)
     arg->receive_frame();
-  }
 }
 
 void Radio::add_frame_handler(std::function<void(Frame *)> &&callback) {
