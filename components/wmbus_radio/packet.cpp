@@ -90,6 +90,7 @@ uint32_t Packet::rx_offset() {
 bool Packet::calculate_payload_size() {
   auto total_length = this->expected_size();
   this->data_.reserve(total_length);
+  ESP_LOGD("Packet", "Payload size calculated: %zu, size: %zu", total_length, this->data_.size());
   return total_length;
 }
 
