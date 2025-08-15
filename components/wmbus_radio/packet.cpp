@@ -94,8 +94,10 @@ std::optional<Frame> Packet::convert_to_frame() {
   if (this->link_mode() == LinkMode::T1 &&
       this->expected_size() == this->data_.size()) {
     auto decoded_data = decode3of6(this->data_);
-    if (decoded_data)
+    if (decoded_data) {
+      ESP_LOGD("Packet", "Decoded data (3of6): %s", format_hex(decoded_data.value()).c_str());
       this->data_ = decoded_data.value();
+    }
   }
   else if (this->link_mode() == LinkMode::C1) {
     this->data_.erase(this->data_.begin(), this->data_.begin() + 2);
