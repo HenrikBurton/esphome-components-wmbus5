@@ -104,7 +104,8 @@ std::optional<Frame> Packet::convert_to_frame() {
       ESP_LOGD("Packet", "Decoded data (3of6): %s", format_hex(decoded_data.value()).c_str());
       this->data_ = decoded_data.value();
     } else {
-      ESP_LOGD("Packet", "Failed to decode 3of6 data");
+      ESP_LOGD("Packet", "Failed to decode 3of6 data %02x %02x %02x",
+               this->data_[0], this->data_[1], this->data_[2]);
     }
   }
   else if (this->link_mode() == LinkMode::C1) {
