@@ -101,6 +101,7 @@ std::optional<Frame> Packet::convert_to_frame() {
   }
   else if (this->link_mode() == LinkMode::C1) {
     this->data_.erase(this->data_.begin(), this->data_.begin() + 2);
+    ESP_LOGD("Packet", "Data after C1 preamble removal: %s", format_hex(this->data_).c_str());
   }
 
   removeAnyDLLCRCs(this->data_);
