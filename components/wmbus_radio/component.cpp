@@ -84,13 +84,13 @@ void Radio::receive_frame() {
 
   auto packet = std::make_unique<Packet>();
 
-  if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity(), 0)) 
+  if (!this->radio->read_in_task(packet->get(), packet->rx_capacity(), 0)) 
     return;
 
   if (!packet->calculate_payload_size())
     return;
 
-  if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity(), 0)) //packet->rx_offset()))
+  if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity(), packet->rx_offset()))
     return;
 
   packet->set_rssi(this->radio->get_rssi());
