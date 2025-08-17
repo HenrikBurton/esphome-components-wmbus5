@@ -2,8 +2,6 @@
 
 #include "esphome/core/log.h"
 
-#define F_OSC (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f)
-
 namespace esphome {
 namespace wmbus_radio {
 static const char *TAG = "SX1262";
@@ -31,8 +29,7 @@ void SX1262::setup() {
 
   ESP_LOGVV(TAG, "setting radio frequency");
   const uint32_t frequency = 868950000;
-
-  uint32_t frf = ((uint64_t)frequency * (1 << RADIOLIB_SX126X_DIV_EXPONENT)) / F_OSC;
+  const uint32_t frf = ((uint64_t)frequency * (uint32_t(1) << RADIOLIB_SX126X_DIV_EXPONENT)) / RADIOLIB_SX126X_CRYSTAL_FREQ;
   this->spi_write(RADIOLIB_SX126X_CMD_SET_RF_FREQUENCY, {
                   BYTE(frf, 3), BYTE(frf, 2), BYTE(frf, 1), BYTE(frf, 0)});
 
@@ -40,8 +37,8 @@ void SX1262::setup() {
   this->spi_write(RADIOLIB_SX126X_CMD_SET_BUFFER_BASE_ADDRESS, {0x00, 0x00});
 
   ESP_LOGVV(TAG, "setting modulation parameters");
-  uint32_t bitrate = (uint32_t)((F_OSC * 32.0f) / (100.0f * 1000.0f));
-  uint32_t freqdev = (uint32_t)(((50.0f * 1000.0f) * (float)((uint32_t)(1) << 25)) / F_OSC);
+  uint32_t bitrate = (uint32_t)((RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f * 32.0f) / (100.0f * 1000.0f));
+  uint32_t freqdev = (uint32_t)(((50.0f * 1000.0f) * (float)((uint32_t)(1) << 25)) / (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f));
   this->spi_write(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, {
                   BYTE(bitrate, 2), BYTE(bitrate, 1), BYTE(bitrate, 0),
                   RADIOLIB_SX126X_GFSK_FILTER_NONE,
