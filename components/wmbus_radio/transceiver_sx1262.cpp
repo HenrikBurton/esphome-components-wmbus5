@@ -28,8 +28,8 @@ void SX1262::setup() {
   this->spi_write(RADIOLIB_SX126X_CMD_SET_PACKET_TYPE, {RADIOLIB_SX126X_PACKET_TYPE_GFSK});
 
   ESP_LOGVV(TAG, "setting radio frequency");
-  const uint32_t frequency = 868950000;
-  const uint32_t frf = ((uint64_t)frequency * (uint32_t(1) << RADIOLIB_SX126X_DIV_EXPONENT)) / RADIOLIB_SX126X_CRYSTAL_FREQ;
+  const float frequency = 868.950;
+  const uint32_t frf = (frequency * (uint32_t(1) << RADIOLIB_SX126X_DIV_EXPONENT)) / RADIOLIB_SX126X_CRYSTAL_FREQ;
   this->spi_write(RADIOLIB_SX126X_CMD_SET_RF_FREQUENCY, {
                   BYTE(frf, 3), BYTE(frf, 2), BYTE(frf, 1), BYTE(frf, 0)});
 
