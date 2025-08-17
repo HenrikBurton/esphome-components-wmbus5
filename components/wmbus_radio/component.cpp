@@ -90,7 +90,7 @@ void Radio::receive_frame() {
   if (!packet->calculate_payload_size())
     return;
 
-  if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity(), WMBUS_PREAMBLE_SIZE)) //packet->rx_offset()))
+  if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity(), 3)) //packet->rx_offset()))
     return;
 
   packet->set_rssi(this->radio->get_rssi());
