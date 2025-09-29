@@ -113,8 +113,10 @@ std::optional<Frame> Packet::convert_to_frame() {
       // TODO: Remove assumption that T1 is always A
       this->frame_format_ = "A";
       auto decoded_data = decode3of6(this->data_);
-      if (decoded_data)
+      if (decoded_data) {
         this->data_ = decoded_data.value();
+        debugPayload("Decoded packet", this->data_);
+      }
     } else if (this->link_mode() == LinkMode::C1) {
       ESP_LOGD(TAG, "Link mode: C1");
       if (this->data_[1] == WMBUS_BLOCK_A_PREAMBLE)
