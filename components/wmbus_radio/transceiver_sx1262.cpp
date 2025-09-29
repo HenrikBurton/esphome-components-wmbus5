@@ -112,7 +112,7 @@ bool SX1262::get_frame(uint8_t *buffer, size_t length, uint32_t offset) {
       const uint32_t irqmask = RADIOLIB_SX126X_IRQ_RX_DONE; 
       this->spi_write(RADIOLIB_SX126X_CMD_CLEAR_IRQ_STATUS, {BYTE(irqmask, 1), BYTE(irqmask, 0)});
 
-      *buffer = 0x00; *(buffer + 1) = 0x01; *(buffer + 2) = 0x02; *(buffer + 3) = 0x03; // Mark as continued
+      *buffer = BYTE(length, 1); *(buffer + 1) = BYTE(length, 0); *(buffer + 2) = 0x02; *(buffer + 3) = 0x03; // Mark as continued
     }
     return true;
   }
