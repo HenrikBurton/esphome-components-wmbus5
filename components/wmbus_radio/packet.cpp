@@ -107,13 +107,16 @@ std::optional<Frame> Packet::convert_to_frame() {
   debugPayload("raw packet", this->data_);
 
   if (this->expected_size() == this->data_.size()) {
+    ESP_LOGD(TAG, "expected_size: OK, size: %zu", this->data_.size());
     if (this->link_mode() == LinkMode::T1) {
+      ESP_LOGD(TAG, "Link mode: T1");
       // TODO: Remove assumption that T1 is always A
-      this->frame_format_ = "b";
+      this->frame_format_ = "A";
       auto decoded_data = decode3of6(this->data_);
       if (decoded_data)
         this->data_ = decoded_data.value();
     } else if (this->link_mode() == LinkMode::C1) {
+      ESP_LOGD(TAG, "Link mode: C1");
       if (this->data_[1] == WMBUS_BLOCK_A_PREAMBLE)
         this->frame_format_ = "A";
       else if (this->data_[1] == WMBUS_BLOCK_B_PREAMBLE)
