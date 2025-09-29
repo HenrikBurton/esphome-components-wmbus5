@@ -42,6 +42,7 @@ uint8_t Packet::l_field() {
     if (!decoded) {
       ESP_LOGE("Packet", "Failed to decode 3of6 data");
     } else {
+      ESP_LOGD("Packet", "Incomming preample (3of6): %02x %02x %02x", this->data_[0], this->data_[1], this->data_[2]);
       ESP_LOGD("Packet", "Decoded data (3of6): %s", format_hex(decoded.value()).c_str());
     }
     if (decoded)
@@ -132,7 +133,6 @@ std::optional<Frame> Packet::convert_to_frame() {
   }
 
   removeAnyDLLCRCs(this->data_);
-  debugPayload("cleaned packet", this->data_);
   int dummy;
   if (checkWMBusFrame(this->data_, (size_t *)&dummy, &dummy, &dummy, false) ==
       FrameStatus::FullFrame)
