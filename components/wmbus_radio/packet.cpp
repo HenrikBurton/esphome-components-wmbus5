@@ -92,7 +92,7 @@ uint8_t *Packet::rx_data_ptr() {
 }
 
 uint32_t Packet::rx_offset() {
-  return this->data_.data() - this->data_.begin();
+  return auto this->data_.data() - this->data_.begin();
 }
 
 bool Packet::calculate_payload_size() {
