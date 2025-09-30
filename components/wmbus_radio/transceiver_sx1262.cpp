@@ -116,6 +116,8 @@ bool SX1262::get_frame(uint8_t *buffer, size_t length, uint32_t offset) {
       this->spi_write(RADIOLIB_SX126X_CMD_SET_RX, {
                       BYTE(timeout, 2), BYTE(timeout, 1), BYTE(timeout, 0)
                       });
+    } else {
+      *buffer = BYTE(length, 0); *(buffer + 1) = BYTE(length, 1);
     }
     return true;
   }
