@@ -102,7 +102,6 @@ std::optional<Frame> Packet::convert_to_frame() {
   debugPayload("raw packet", this->data_);
 
   if (this->expected_size() == this->data_.size()) {
-    ESP_LOGD(TAG, "expected_size: OK, size: %zu", this->data_.size());
     if (this->link_mode() == LinkMode::T1) {
       ESP_LOGD(TAG, "Link mode: T1");
       // TODO: Remove assumption that T1 is always A
