@@ -92,7 +92,7 @@ uint8_t *Packet::rx_data_ptr() {
 }
 
 uint32_t Packet::rx_offset() {
-  auto offset = this->data_.data() - this->data_.begin();
+  auto offset = this->data_.data() - this->data_;
   return offset;
 }
 
