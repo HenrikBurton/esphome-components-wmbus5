@@ -41,10 +41,8 @@ uint8_t Packet::l_field() {
     auto decoded = decode3of6(this->data_);
     if (!decoded) {
       ESP_LOGE("Packet", "Failed to decode 3of6 data");
-    } else {
-      ESP_LOGD("Packet", "Incomming preample (3of6): %02x %02x %02x", this->data_[0], this->data_[1], this->data_[2]);
-      ESP_LOGD("Packet", "Decoded data (3of6): %s", format_hex(decoded.value()).c_str());
     }
+
     if (decoded)
       return (*decoded)[0];
   }
