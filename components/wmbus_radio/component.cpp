@@ -53,7 +53,7 @@ void Radio::loop() {
   uint8_t packet_handled = 0;
   for (auto &handler : this->handlers_)
     handler(&frame.value());
-
+  
   if (frame->handlers_count())
     ESP_LOGI(TAG, "Telegram handled by %d handlers", frame->handlers_count());
   else {
