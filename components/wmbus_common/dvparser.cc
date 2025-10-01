@@ -582,7 +582,7 @@ bool parseDV(Telegram *t, std::vector<uchar> &databytes,
 
     DVEntry *dve = &(*dv_entries)[key].second;
 
-    trace("[DVPARSER] entry %s\n", dve->str().c_str());
+    trace("[DVPARSER] entry %s\n", dve->dif_vif_key.str().c_str());
 
     assert(key == dve->dif_vif_key.str());
 
