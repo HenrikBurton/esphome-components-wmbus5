@@ -73,15 +73,12 @@ void Radio::loop() {
 }
 
 void Radio::wakeup_receiver_task_from_isr(TaskHandle_t *arg) {
-  ESP_LOGD(TAG, "Wakeup receiver task from ISR");
   BaseType_t xHigherPriorityTaskWoken;
   vTaskNotifyGiveFromISR(*arg, &xHigherPriorityTaskWoken);
   portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 void Radio::receive_frame() {
-  ESP_LOGD(TAG, "Receive frame");
-
   if (!ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(60000))) {
     this->radio->restart_rx();
     return;
