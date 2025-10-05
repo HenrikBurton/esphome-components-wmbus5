@@ -23,8 +23,7 @@ void Radio::setup() {
   ASSERT_SETUP(this->packet_queue_ = xQueueCreate(3, sizeof(Packet *)));
 
   ASSERT_SETUP(xTaskCreate((TaskFunction_t)this->receiver_task, "radio_recv",
-                           10 * 1024, this, 2, &(this->receiver_task_handle_)));
-//                           3 * 1024, this, 2, &(this->receiver_task_handle_)));
+                           3 * 1024, this, 2, &(this->receiver_task_handle_)));
 
   ESP_LOGI(TAG, "Receiver task created [%p]", this->receiver_task_handle_);
 
