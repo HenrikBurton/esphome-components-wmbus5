@@ -39,9 +39,6 @@ uint8_t Packet::l_field() {
     return this->data_[2];
   case LinkMode::T1: {
     auto decoded = decode3of6(this->data_);
-    if (!decoded) {
-      ESP_LOGE("Packet", "Failed to decode 3of6 data");
-    }
 
     if (decoded)
       return (*decoded)[0];
