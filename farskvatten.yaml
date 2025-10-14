@@ -1,0 +1,175 @@
+esphome:
+  name: farskvatten
+  friendly_name: Färskvatten
+
+esp32:
+  board: um_tinys3
+  flash_size: 4MB
+  cpu_frequency: 240MHz
+  variant: esp32s3
+  framework:
+    type: esp-idf
+
+debug:
+  update_interval: 5s
+
+text_sensor:
+  - platform: debug
+    device:
+      name: "Device Info"
+    reset_reason:
+      name: "Reset Reason"
+
+# Enable logging
+logger:
+  baud_rate: 0
+  level: VERBOSE
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+ota:
+  - platform: esphome
+    #password: !secret ota_password
+    password: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  ap:
+    ssid: "Farskvatten Fallback Hotspot"
+    password: "xxxxxxxxx"
+
+captive_portal:
+
+time:
+  - platform: sntp
+    id: time_sntp
+
+# Use component wmbus MAIN branch
+external_components:
+  - source: github://HenrikBurton/esphome-components-wmbus5@main
+    refresh: 0s
+
+spi:
+  clk_pin: 
+    number: GPIO12
+    mode:
+      output: true
+      pullup: true
+  mosi_pin: GPIO13
+  miso_pin: GPIO11
+
+wmbus_radio:
+  radio_type: SX1262
+  cs_pin:
+    number: GPIO1
+    mode:
+      output: true
+      pullup: true
+  reset_pin:
+    number: GPIO7
+    inverted: false
+    mode:
+      output: true
+      pullup: true
+  irq_pin:
+    number: GPIO8
+    inverted: false
+    mode:
+      input: true
+  on_frame:
+    - then:
+        - logger.log:
+            format: "RSSI: %ddBm T: %s (%d)"
+            args: [ frame->rssi(), frame->as_hex().c_str(), frame->data().size() ]
+    - then:
+        - repeat:
+            count: 3
+            then:
+              - output.turn_on: status_led
+              - delay: 100ms
+              - output.turn_off: status_led
+              - delay: 100ms
+wmbus_meter:
+  - id: water_meter
+    meter_id: 0x85003900
+#    type: unknown
+    type: hydrus
+    key: !secret WaterMeterKey
+    mode: 
+      - T1
+      - C1
+
+output:
+  - platform: gpio
+    id: status_led
+    pin: GPIO48
+
+sensor:
+  - platform: wmbus_meter
+    parent_id: water_meter
+    field: "rssi"
+    device_class: "signal_strength"
+    name: "RSSi"
+    accuracy_decimals: 0
+    state_class: "measurement"
+    entity_category: "diagnostic"
+    unit_of_measurement: "dBm"
+
+  - platform: wmbus_meter
+    parent_id: water_meter
+    field: "total"
+    device_class: "water"
+    name: "Total (m3)"
+    accuracy_decimals: 3
+    state_class: "total_increasing"
+    unit_of_measurement: "m³"
+    icon: "mdi:water"
+
+  - platform: wmbus_meter
+    parent_id: water_meter
+    field: "flow"
+    device_class: "volume_flow_rate"
+    name: "Flow (m3/h)"
+    accuracy_decimals: 3
+    state_class: "measurement"
+    unit_of_measurement: "m³/h"
+    icon: "mdi:water"
+
+  - platform: wmbus_meter
+    parent_id: water_meter
+    field: "flow_temperature"    
+    device_class: "temperature"
+    name: "Flow temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:water"
+
+  - platform: wmbus_meter
+    parent_id: water_meter
+    field: "external_temperature"
+    device_class: "temperature"
+    name: "External temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:water"
+
+  - platform: debug
+    free:
+      name: "Heap Free"
+    block:
+      name: "Heap Max Block"
+    loop_time:
+      name: "Loop Time"
+
+#text_sensor:
+#  - platform: wmbus_meter
+#    parent_id: water_meter
+#    field: timestamp
+#    name: Water Meter timestamp
